@@ -119,17 +119,15 @@ end)
 
 Citizen.CreateThread(function()
     while true do
-        local toSend = {}
         for k, v in pairs(Config.Registers) do
             if Config.Registers[k].time > 0 and (Config.Registers[k].time - Config.tickInterval) >= 0 then
                 Config.Registers[k].time = Config.Registers[k].time - Config.tickInterval
             else
                 Config.Registers[k].time = 0
                 Config.Registers[k].robbed = false
-                table.insert(toSend, k)
+                TriggerClientEvent('qb-storerobbery:client:setRegisterStatus', -1, k, false)
             end
         end
-        TriggerClientEvent('qb-storerobbery:client:setRegisterStatus', -1, toSend, false)        
         Citizen.Wait(Config.tickInterval)
     end
 end)
